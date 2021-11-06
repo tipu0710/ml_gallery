@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ml_gallery/ui/home/view/photo_card.dart';
+import 'package:ml_gallery/ui/home/view/photo_library.dart';
 import 'package:ml_gallery/ui/ui_helper/ml_text.dart';
 import 'package:ml_gallery/utils/constants.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,21 +39,7 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: body(),
-    );
-  }
-
-  Widget body() {
-    return GridView.builder(
-      itemCount: 56,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemBuilder: (_, i) => const PhotoCard(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 40/70,
-        mainAxisSpacing: 7,
-        crossAxisSpacing: 10,
-      ),
+      body: const PhotoLibrary(),
     );
   }
 }

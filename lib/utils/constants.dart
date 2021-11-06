@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const baseUrl = "https://picsum.photos";
+const storeName = 'apiBox';
 const scaffoldColor = Color(0xFFfbf9e3);
 const appBarColor = Color(0xFFfffef4);
 const kPrimaryColor = Color(0xFF555539);

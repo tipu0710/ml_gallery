@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:ml_gallery/ui/home/view/home.dart';
+import 'package:ml_gallery/utils/constants.dart';
 import 'package:ml_gallery/utils/hero_route.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -37,11 +41,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void goTo() async {
     await Future.delayed(const Duration(seconds: 2));
+    if (kIsWeb) {
+    await Hive.openBox(storeName);
+  } else {
+    var dir = await getApplicationDocumentsDirectory();
+    Hive.init(dir.path);
+    await Hive.openBox(storeName);
+  }
     Navigator.pushAndRemoveUntil(
-          context,
-          HeroRoute(
-            builder: (_) => const Home(),
-          ),
-          (route) => false);
+        context,
+        HeroRoute(
+          builder: (_) => const Home(),
+        ),
+        (route) => false);
   }
 }
