@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: kPrimarySwatch,
         scaffoldBackgroundColor: scaffoldColor,
-        appBarTheme: const AppBarTheme(color: appBarColor),
       ),
       home: const SplashScreen(),
     );
