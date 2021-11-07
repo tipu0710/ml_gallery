@@ -38,8 +38,10 @@ class RelatedPhotoCard extends StatelessWidget {
                     Navigator.push(
                       context,
                       HeroRoute(
-                        builder: (_) =>
-                            FullScreenPhoto(url: result.links!.download!),
+                        builder: (_) => FullScreenPhoto(
+                          url: result.links!.download!,
+                          relatedPhoto: true,
+                        ),
                       ),
                     );
                   } else {

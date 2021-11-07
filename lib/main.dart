@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
     return OverlaySupport.global(
       child: MaterialApp(
         title: 'ML Gallery',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: kPrimarySwatch,
           scaffoldBackgroundColor: scaffoldColor,

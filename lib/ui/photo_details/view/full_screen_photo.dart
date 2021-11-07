@@ -1,13 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:ml_gallery/utils/constants.dart';
+import 'package:ml_gallery/ui/photo_details/controller/photo_details_controller.dart';
+import 'package:ml_gallery/ui/photo_details/view/leading_icon.dart';
 
 class FullScreenPhoto extends StatelessWidget {
   final String url;
-  const FullScreenPhoto({Key? key, required this.url}) : super(key: key);
+  final bool relatedPhoto;
+  const FullScreenPhoto(
+      {Key? key, required this.url, this.relatedPhoto = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    PhotoDetailsController photoDetailsController = PhotoDetailsController();
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.85),
       body: SafeArea(
@@ -23,31 +28,50 @@ class FullScreenPhoto extends StatelessWidget {
               ),
             ),
             Align(
-              alignment: Alignment.topRight,
-              child: leadingWidget(context),
+              alignment: Alignment.topCenter,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: LeadingWidget(
+                      icon: Icons.arrow_back,
+                      onTap: () => Navigator.pop(context),
+                      showNeumorphism: false,
+                    ),
+                  ),
+                  if (relatedPhoto)
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            LeadingWidget(
+                                onTap: () {
+                                  photoDetailsController.share(url);
+                                },
+                                showNeumorphism: false,
+                                icon: Icons.share),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            LeadingWidget(
+                                onTap: () {
+                                  photoDetailsController.savePhoto(
+                                      context, url);
+                                },
+                                showNeumorphism: false,
+                                icon: Icons.download),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                ],
+              ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-    Widget leadingWidget(BuildContext context) {
-    return GestureDetector(
-      onTap: ()=>Navigator.pop(context),
-      child: Container(
-        decoration: BoxDecoration(
-          color: appBarColor.withOpacity(.5),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        height: 40,
-        width: 40,
-        margin: const EdgeInsets.only(right: 16, top: 10),
-        child: const Center(
-          child: Icon(
-            Icons.close,
-            color: kPrimarySwatch,
-          ),
         ),
       ),
     );
