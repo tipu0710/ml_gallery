@@ -9,7 +9,7 @@
 
 ## Features
 
-- Get unlimited pgotos with infinite scroll.
+- Get unlimited photos with infinite scroll.
 - See the details of any photo by a single tap
 - View, share, download any photos any time
 - View also related photos
