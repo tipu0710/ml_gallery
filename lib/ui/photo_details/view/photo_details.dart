@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ml_gallery/service/providers/photo_model_providers.dart';
 import 'package:ml_gallery/ui/home/model/image_info_model.dart';
 import 'package:ml_gallery/ui/photo_details/controller/photo_details_controller.dart';
 import 'package:ml_gallery/ui/photo_details/view/full_screen_photo.dart';
@@ -11,13 +12,13 @@ import 'package:ml_gallery/ui/ui_helper/ml_text.dart';
 import 'package:ml_gallery/utils/constants.dart';
 import 'package:ml_gallery/extensions.dart';
 import 'package:ml_gallery/utils/hero_route.dart';
+import 'package:ml_gallery/utils/responsive.dart';
 import 'package:ml_gallery/utils/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PhotoDetails extends StatefulWidget {
-  final ImageInfoModel imageInfoModel;
-  const PhotoDetails({Key? key, required this.imageInfoModel})
-      : super(key: key);
+  const PhotoDetails({Key? key}) : super(key: key);
 
   @override
   _PhotoDetailsState createState() => _PhotoDetailsState();
@@ -25,33 +26,51 @@ class PhotoDetails extends StatefulWidget {
 
 class _PhotoDetailsState extends State<PhotoDetails> {
   PhotoDetailsController photoDetailsController = PhotoDetailsController();
+  ImageInfoModel? imageInfoModel;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: scaffoldColor,
-        foregroundColor: scaffoldColor,
-        elevation: 0,
-        leading: Container(),
-        leadingWidth: 0,
-        toolbarHeight: 80,
-        title: leadingWidget(() => Navigator.pop(context), Icons.arrow_back),
-        actions: [actions()],
-      ),
+      appBar: Responsive.isMobile(context)
+          ? AppBar(
+              backgroundColor: scaffoldColor,
+              foregroundColor: scaffoldColor,
+              elevation: 0,
+              leading: Container(),
+              leadingWidth: 0,
+              toolbarHeight: 80,
+              title:
+                  leadingWidget(() => Navigator.pop(context), Icons.arrow_back),
+              actions: [actions()],
+            )
+          : null,
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            imageCard(widget.imageInfoModel.downloadUrl!),
-            author(),
-            RelatedPhotos(
-              key: Key(widget.imageInfoModel.url!),
-              urlId: widget.imageInfoModel.url!.getUrlId(),
-            ),
-          ],
+        child: Consumer<PhotoModelProviders>(
+          builder: (_, photoModelProvider, __) {
+            if (photoModelProvider.imageInfoModel != null) {
+              imageInfoModel = photoModelProvider.imageInfoModel!;
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  imageCard(imageInfoModel!.downloadUrl!),
+                  if (Responsive.isTablet(context))
+                    Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 20),
+                        child: actions()),
+                  author(),
+                  RelatedPhotos(
+                    key: Key(imageInfoModel!.url!),
+                    urlId: photoModelProvider.imageInfoModel!.url!.getUrlId(),
+                  ),
+                ],
+              );
+            } else {
+              return Container();
+            }
+          },
         ),
       ),
     );
@@ -61,7 +80,7 @@ class _PhotoDetailsState extends State<PhotoDetails> {
     return Row(
       children: [
         leadingWidget(() {
-          photoDetailsController.share(widget.imageInfoModel.downloadUrl!);
+          photoDetailsController.share(imageInfoModel!.downloadUrl!);
         }, Icons.share),
         const SizedBox(
           width: 15,
@@ -88,13 +107,13 @@ class _PhotoDetailsState extends State<PhotoDetails> {
             width: 16,
           ),
           MlText(
-            text: widget.imageInfoModel.author ?? "",
+            text: imageInfoModel!.author ?? "",
             fontFamily: fontName,
             fontSize: 18,
             fontWeight: FontWeight.w600,
             textDecoration: TextDecoration.underline,
             onTap: () {
-              launch(widget.imageInfoModel.url!);
+              launch(imageInfoModel!.url!);
             },
           ),
         ],
@@ -126,8 +145,6 @@ class _PhotoDetailsState extends State<PhotoDetails> {
     return Hero(
       tag: url,
       child: Container(
-        width: MediaQuery.of(context).size.width - 32,
-        height: 300,
         margin: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20), color: appBarColor),
@@ -146,8 +163,8 @@ class _PhotoDetailsState extends State<PhotoDetails> {
   }
 
   savePhoto() async {
-    File? file = await photoDetailsController
-        .getFile(widget.imageInfoModel.downloadUrl!);
+    File? file =
+        await photoDetailsController.getFile(imageInfoModel!.downloadUrl!);
     if (file == null) {
       Utils.showSnackBar(
           context, "Something went wrong! cannot save the photo!",
@@ -163,8 +180,7 @@ class _PhotoDetailsState extends State<PhotoDetails> {
     Navigator.push(
       context,
       HeroRoute(
-        builder: (_) =>
-            FullScreenPhoto(url: widget.imageInfoModel.downloadUrl!),
+        builder: (_) => FullScreenPhoto(url: imageInfoModel!.downloadUrl!),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:ml_gallery/utils/constants.dart';
 
 class FullScreenPhoto extends StatelessWidget {
   final String url;
@@ -21,15 +22,30 @@ class FullScreenPhoto extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.topRight,
-              child: IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(
-                  Icons.close,
-                  color: Colors.white,
-                ),
-              ),
+              child: leadingWidget(context),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+    Widget leadingWidget(BuildContext context) {
+    return GestureDetector(
+      onTap: ()=>Navigator.pop(context),
+      child: Container(
+        decoration: BoxDecoration(
+          color: appBarColor.withOpacity(.5),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        height: 40,
+        width: 40,
+        margin: const EdgeInsets.only(right: 16, top: 10),
+        child: const Center(
+          child: Icon(
+            Icons.close,
+            color: kPrimarySwatch,
+          ),
         ),
       ),
     );

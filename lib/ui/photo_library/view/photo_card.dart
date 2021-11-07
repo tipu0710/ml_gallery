@@ -2,12 +2,15 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ml_gallery/service/providers/photo_model_providers.dart';
 import 'package:ml_gallery/ui/home/model/image_info_model.dart';
 import 'package:ml_gallery/ui/photo_details/controller/photo_details_controller.dart';
 import 'package:ml_gallery/ui/photo_details/view/photo_details.dart';
 import 'package:ml_gallery/utils/constants.dart';
 import 'package:ml_gallery/utils/hero_route.dart';
+import 'package:ml_gallery/utils/responsive.dart';
 import 'package:ml_gallery/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class PhotoCard extends StatelessWidget {
   final ImageInfoModel imageInfoModel;
@@ -17,25 +20,30 @@ class PhotoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        File? file =
-            await PhotoDetailsController().getFile(imageInfoModel.downloadUrl!);
-        if (file != null) {
-          Navigator.push(
-            context,
-            HeroRoute(
-              builder: (_) => PhotoDetails(
-                imageInfoModel: imageInfoModel,
+        PhotoModelProviders photoModelProviders =
+            Provider.of<PhotoModelProviders>(context, listen: false);
+        photoModelProviders.setModel(imageInfoModel);
+        if (Responsive.isMobile(context)) {
+          File? file = await PhotoDetailsController()
+              .getFile(imageInfoModel.downloadUrl!);
+          if (file != null) {
+            Navigator.push(
+              context,
+              HeroRoute(
+                builder: (_) => const PhotoDetails(),
               ),
-            ),
-          );
-        } else {
-          Utils.showSnackBar(context, "Photo is not ready! Please wait!");
+            );
+          } else {
+            Utils.showSnackBar(context, "Photo is not ready! Please wait!");
+          }
         }
       },
       child: Hero(
-        tag: imageInfoModel.downloadUrl!,
+        tag: Responsive.isMobile(context)
+            ? imageInfoModel.downloadUrl!
+            : "${imageInfoModel.downloadUrl!}!",
         child: Container(
-          height: 70,
+          height: 50,
           width: 40,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(60), color: appBarColor),

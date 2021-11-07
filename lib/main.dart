@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ml_gallery/service/providers/photo_model_providers.dart';
 import 'package:ml_gallery/ui/splash_screen/splash_screen.dart';
 import 'package:ml_gallery/utils/constants.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<PhotoModelProviders>(
+      create: (_) => PhotoModelProviders(),
+    ),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

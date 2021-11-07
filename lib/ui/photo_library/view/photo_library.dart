@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ml_gallery/ui/home/controller/image_library_controller.dart';
 import 'package:ml_gallery/ui/home/model/image_info_model.dart';
-import 'package:ml_gallery/ui/home/view/photo_card.dart';
+import 'package:ml_gallery/ui/photo_library/view/photo_card.dart';
+import 'package:rive/rive.dart';
 
 class PhotoLibrary extends StatefulWidget {
   const PhotoLibrary({Key? key}) : super(key: key);
@@ -34,26 +35,34 @@ class _PhotoLibraryState extends State<PhotoLibrary> {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 40 / 70,
+        childAspectRatio: 40 / 50,
         crossAxisSpacing: 10,
         mainAxisSpacing: 12,
       ),
       builderDelegate: PagedChildBuilderDelegate<ImageInfoModel>(
-        itemBuilder: (_, model, index) => PhotoCard(imageInfoModel: model,),
-        newPageProgressIndicatorBuilder: (_) =>  Container(
+        itemBuilder: (_, model, index) => PhotoCard(
+          imageInfoModel: model,
+        ),
+        firstPageProgressIndicatorBuilder: (_) => const Center(
+          child: SizedBox(
+            height: 150, width: 150,
+            child: RiveAnimation.asset("assets/anim/ml_gallery_loading.riv"),
+          ),
+        ),
+        newPageProgressIndicatorBuilder: (_) => Container(
           height: 70,
-      width: 40,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(60),
-      ),
+          width: 40,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(60),
+          ),
           child: const Center(
             child: SizedBox(
-                        height: 16,
-                        width: 16,
-                        child: CircularProgressIndicator.adaptive(
-                          strokeWidth: 1,
-                        ),
-                      ),
+              height: 30,
+              width: 30,
+              child: CircularProgressIndicator.adaptive(
+                strokeWidth: 1,
+              ),
+            ),
           ),
         ),
       ),
