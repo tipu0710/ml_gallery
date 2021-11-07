@@ -10,22 +10,24 @@ class FullScreenPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black.withOpacity(0.85),
-      body: Stack(
-        children: [
-          InteractiveViewer(
-            maxScale: 4,
-            child: Center(
-              child: Hero(
-                tag: url,
-                child: CachedNetworkImage(imageUrl: url),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            InteractiveViewer(
+              maxScale: 4,
+              child: Center(
+                child: Hero(
+                  tag: url,
+                  child: CachedNetworkImage(imageUrl: url),
+                ),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: leadingWidget(context),
-          ),
-        ],
+            Align(
+              alignment: Alignment.topRight,
+              child: leadingWidget(context),
+            ),
+          ],
+        ),
       ),
     );
   }
