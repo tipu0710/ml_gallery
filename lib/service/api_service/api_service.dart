@@ -10,9 +10,12 @@ class ApiService {
 
   static var _box = Hive.box(storeName);
 
-  static Future<Response> getMethod(String endPoints) async {
+  static Future<Response> getMethod(String endPoints,
+      {bool allowBaseUrl = true}) async {
     try {
-      Response response = await _dio.get(endPoints);
+      Dio _kDio = Dio();
+      Response response =
+          allowBaseUrl ? await _dio.get(endPoints) : await _kDio.get(endPoints);
       if (!_box.isOpen) {
         _box = await Hive.openBox(storeName);
       }
@@ -25,7 +28,6 @@ class ApiService {
           e.type == DioErrorType.other) {
         if (_box.containsKey(baseUrl + endPoints)) {
           var data = HashMap.from(_box.get(baseUrl + endPoints));
-          print(data.runtimeType);
           return Response(
             requestOptions: RequestOptions(
               path: endPoints.getPath(),

@@ -12,6 +12,8 @@ class MlText extends StatelessWidget {
   final TextAlign? textAlign;
   final int? maxLine;
   final double? textHeight;
+  final String? fontFamily;
+  final VoidCallback? onTap;
   const MlText({
     Key? key,
     required this.text,
@@ -22,24 +24,28 @@ class MlText extends StatelessWidget {
     this.textOverflow,
     this.textDecoration,
     this.maxLine,
-    this.textAlign, this.textHeight,
+    this.textAlign,
+    this.textHeight, this.fontFamily, this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      textAlign: textAlign ?? TextAlign.center,
-      overflow: textOverflow,
-      maxLines: maxLine,
-      style: TextStyle(
-          color: color ?? kPrimaryColor,
-          fontFamily: 'Roboto',
-          fontSize: fontSize ?? 16,
-          letterSpacing: 0,
-          fontWeight: fontWeight??FontWeight.w500,
-          decoration: textDecoration,
-          height: textHeight??1),
+    return InkWell(
+      onTap: onTap,
+      child: Text(
+        text,
+        textAlign: textAlign ?? TextAlign.center,
+        overflow: textOverflow,
+        maxLines: maxLine,
+        style: TextStyle(
+            color: color ?? kPrimaryColor,
+            fontFamily: fontFamily?? 'Roboto',
+            fontSize: fontSize ?? 16,
+            letterSpacing: 0,
+            fontWeight: fontWeight ?? FontWeight.w500,
+            decoration: textDecoration,
+            height: textHeight ?? 1),
+      ),
     );
   }
 }

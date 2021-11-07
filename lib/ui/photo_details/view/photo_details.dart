@@ -5,9 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ml_gallery/ui/home/model/image_info_model.dart';
 import 'package:ml_gallery/ui/photo_details/controller/photo_details_controller.dart';
+import 'package:ml_gallery/ui/photo_details/view/full_screen_photo.dart';
+import 'package:ml_gallery/ui/photo_details/view/related_photos.dart';
+import 'package:ml_gallery/ui/ui_helper/ml_text.dart';
 import 'package:ml_gallery/utils/constants.dart';
 import 'package:ml_gallery/extensions.dart';
+import 'package:ml_gallery/utils/hero_route.dart';
 import 'package:ml_gallery/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PhotoDetails extends StatefulWidget {
   final ImageInfoModel imageInfoModel;
@@ -31,23 +36,7 @@ class _PhotoDetailsState extends State<PhotoDetails> {
         leadingWidth: 0,
         toolbarHeight: 80,
         title: leadingWidget(() => Navigator.pop(context), Icons.arrow_back),
-        actions: [
-          Row(
-            children: [
-              leadingWidget(() {
-                photoDetailsController
-                    .share(widget.imageInfoModel.downloadUrl!);
-              }, Icons.share),
-              const SizedBox(
-                width: 15,
-              ),
-              leadingWidget(savePhoto, Icons.download),
-              const SizedBox(
-                width: 16,
-              ),
-            ],
-          )
-        ],
+        actions: [actions()],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -57,8 +46,58 @@ class _PhotoDetailsState extends State<PhotoDetails> {
               height: 10,
             ),
             imageCard(widget.imageInfoModel.downloadUrl!),
+            author(),
+            RelatedPhotos(
+              key: Key(widget.imageInfoModel.url!),
+              urlId: widget.imageInfoModel.url!.getUrlId(),
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  Row actions() {
+    return Row(
+      children: [
+        leadingWidget(() {
+          photoDetailsController.share(widget.imageInfoModel.downloadUrl!);
+        }, Icons.share),
+        const SizedBox(
+          width: 15,
+        ),
+        leadingWidget(savePhoto, Icons.download),
+        const SizedBox(
+          width: 15,
+        ),
+        leadingWidget(openImage, Icons.fullscreen),
+        const SizedBox(
+          width: 16,
+        ),
+      ],
+    );
+  }
+
+  Padding author() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        children: [
+          const MlText(text: "Author: "),
+          const SizedBox(
+            width: 16,
+          ),
+          MlText(
+            text: widget.imageInfoModel.author ?? "",
+            fontFamily: fontName,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            textDecoration: TextDecoration.underline,
+            onTap: () {
+              launch(widget.imageInfoModel.url!);
+            },
+          ),
+        ],
       ),
     );
   }
@@ -118,5 +157,15 @@ class _PhotoDetailsState extends State<PhotoDetails> {
       Utils.showSnackBar(
           context, save ? "Photo saved!" : "Unable to save the photo!");
     }
+  }
+
+  openImage() {
+    Navigator.push(
+      context,
+      HeroRoute(
+        builder: (_) =>
+            FullScreenPhoto(url: widget.imageInfoModel.downloadUrl!),
+      ),
+    );
   }
 }

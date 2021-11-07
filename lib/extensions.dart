@@ -15,6 +15,12 @@ extension ChangeUrl on String {
     url = url.replaceFirst(RegExp(r"\?[^]*"), "");
     return url;
   }
+
+  getUrlId() {
+    String url = this;
+    var list = url.split("/");
+    return list.last;
+  }
 }
 
 extension Neumorphism on Widget {

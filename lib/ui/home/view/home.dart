@@ -32,9 +32,10 @@ class Home extends StatelessWidget {
               width: 20,
             ),
             const MlText(
-              text: "GALLERY",
+              text: "Gallery",
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: 30,
+              fontFamily: fontName,
             ),
           ],
         ),
