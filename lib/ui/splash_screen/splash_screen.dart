@@ -39,12 +39,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void goTo() async {
     await Future.delayed(const Duration(seconds: 2));
     if (kIsWeb) {
-    await Hive.openBox(storeName);
-  } else {
-    var dir = await getApplicationDocumentsDirectory();
-    Hive.init(dir.path);
-    await Hive.openBox(storeName);
-  }
+      await Hive.openBox(storeName);
+    } else {
+      var dir = await getApplicationDocumentsDirectory();
+      Hive.init(dir.path);
+      await Hive.openBox(storeName);
+    }
     Navigator.pushAndRemoveUntil(
         context,
         HeroRoute(
