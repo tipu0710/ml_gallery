@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +37,10 @@ class _PhotoDetailsState extends State<PhotoDetails> {
               leading: Container(),
               leadingWidth: 0,
               toolbarHeight: 80,
-              title:
-                  leadingWidget(() => Navigator.pop(context), Icons.arrow_back),
+              title: Align(
+                  alignment: Alignment.centerLeft,
+                  child: leadingWidget(
+                      () => Navigator.pop(context), Icons.arrow_back)),
               actions: [actions()],
             )
           : null,
@@ -104,11 +105,11 @@ class _PhotoDetailsState extends State<PhotoDetails> {
         children: [
           const MlText(text: "Author: "),
           const SizedBox(
-            width: 16,
+            width: 10,
           ),
           MlText(
             text: imageInfoModel!.author ?? "",
-            fontFamily: fontName,
+            fontFamily: fontDancingScript,
             fontSize: 18,
             fontWeight: FontWeight.w600,
             textDecoration: TextDecoration.underline,

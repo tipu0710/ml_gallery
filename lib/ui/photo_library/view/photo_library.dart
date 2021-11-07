@@ -3,7 +3,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:ml_gallery/ui/home/controller/image_library_controller.dart';
 import 'package:ml_gallery/ui/home/model/image_info_model.dart';
 import 'package:ml_gallery/ui/photo_library/view/photo_card.dart';
-import 'package:rive/rive.dart';
+import 'package:ml_gallery/ui/ui_helper/loader.dart';
 
 class PhotoLibrary extends StatefulWidget {
   const PhotoLibrary({Key? key}) : super(key: key);
@@ -44,10 +44,7 @@ class _PhotoLibraryState extends State<PhotoLibrary> {
           imageInfoModel: model,
         ),
         firstPageProgressIndicatorBuilder: (_) => const Center(
-          child: SizedBox(
-            height: 150, width: 150,
-            child: RiveAnimation.asset("assets/anim/ml_gallery_loading.riv"),
-          ),
+          child: Loader(),
         ),
         newPageProgressIndicatorBuilder: (_) => Container(
           height: 70,
@@ -55,15 +52,7 @@ class _PhotoLibraryState extends State<PhotoLibrary> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(60),
           ),
-          child: const Center(
-            child: SizedBox(
-              height: 30,
-              width: 30,
-              child: CircularProgressIndicator.adaptive(
-                strokeWidth: 1,
-              ),
-            ),
-          ),
+          child: const Loader(size: 140,),
         ),
       ),
     );
@@ -78,3 +67,4 @@ class _PhotoLibraryState extends State<PhotoLibrary> {
     }
   }
 }
+

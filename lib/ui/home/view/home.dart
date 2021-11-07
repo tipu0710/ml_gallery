@@ -40,7 +40,7 @@ class Home extends StatelessWidget {
               text: "Gallery",
               fontWeight: FontWeight.bold,
               fontSize: 30,
-              fontFamily: fontName,
+              fontFamily: fontDancingScript,
             ),
           ],
         ),

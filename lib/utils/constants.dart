@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 const baseUrl = "https://picsum.photos";
 const storeName = 'apiBox';
-const fontName = "Dancing Script";
+const fontDancingScript = "Dancing Script";
+const fontLibreBaskerville = "LibreBaskerville";
 
 const scaffoldColor = Color(0xFFfbf9e3);
 const appBarColor = Color(0xFFfffef4);

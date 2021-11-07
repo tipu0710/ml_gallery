@@ -39,7 +39,7 @@ class MlText extends StatelessWidget {
         maxLines: maxLine,
         style: TextStyle(
             color: color ?? kPrimaryColor,
-            fontFamily: fontFamily?? 'Roboto',
+            fontFamily: fontFamily?? fontLibreBaskerville,
             fontSize: fontSize ?? 16,
             letterSpacing: 0,
             fontWeight: fontWeight ?? FontWeight.w500,

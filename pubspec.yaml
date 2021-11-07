@@ -47,6 +47,9 @@ flutter:
      - family: Dancing Script
        fonts:
          - asset: assets/fonts/DancingScript.ttf
+     - family: LibreBaskerville
+       fonts:
+         - asset: assets/fonts/LibreBaskerville-Bold.ttf
   
 
   

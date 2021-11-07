@@ -101,10 +101,10 @@ class RelatedPhotoCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
             child: MlText(
               text: result.user?.name ?? "",
-              fontFamily: fontName,
-              fontSize: 18,
+              fontFamily: fontDancingScript,
+              fontSize: 16,
               textAlign: TextAlign.start,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
               textOverflow: TextOverflow.ellipsis,
               textDecoration: TextDecoration.underline,
               onTap: () {

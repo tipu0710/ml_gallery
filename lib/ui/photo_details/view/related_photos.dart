@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ml_gallery/ui/photo_details/controller/related_photo_controller.dart';
 import 'package:ml_gallery/ui/photo_details/model/related_photo_model.dart';
 import 'package:ml_gallery/ui/photo_details/view/related_photo_card.dart';
+import 'package:ml_gallery/ui/ui_helper/loader.dart';
 import 'package:ml_gallery/ui/ui_helper/ml_text.dart';
 
 class RelatedPhotos extends StatelessWidget {
@@ -18,7 +19,7 @@ class RelatedPhotos extends StatelessWidget {
           if (snapshot.hasData) {
             return body(snapshot.data!);
           } else {
-            return Container();
+            return const Loader();
           }
         });
   }
