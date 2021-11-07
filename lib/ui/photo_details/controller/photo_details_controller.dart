@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:share/share.dart';
 
 class PhotoDetailsController {
   Future<File?> getFile(String imageUrl) async {
     final cache = DefaultCacheManager();
     FileInfo? file = await cache.getFileFromCache(imageUrl);
-    print(file?.file.path);
     return file?.file;
   }
 
@@ -19,5 +19,10 @@ class PhotoDetailsController {
     } else {
       return false;
     }
+  }
+
+  Future<bool> savePhoto(File file) async {
+    bool? save = await GallerySaver.saveImage(file.path);
+    return save ?? false;
   }
 }

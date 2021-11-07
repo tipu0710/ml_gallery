@@ -6,6 +6,7 @@ import 'package:ml_gallery/ui/home/view/home.dart';
 import 'package:ml_gallery/utils/constants.dart';
 import 'package:ml_gallery/utils/hero_route.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rive/rive.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -25,15 +26,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Hero(
         tag: "logo",
         child: Center(
-          child: Image.asset(
-            "assets/images/logo.png",
-            height: 50,
-            width: 50,
-          ),
+          child: RiveAnimation.asset('assets/anim/ml_gallery.riv'),
         ),
       ),
     );
