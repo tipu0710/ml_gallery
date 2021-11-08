@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:ml_gallery/service/cache_manager/cache_manager.dart';
 import 'package:ml_gallery/utils/constants.dart';

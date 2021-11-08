@@ -23,6 +23,15 @@ class PhotoDetails extends StatefulWidget {
 class _PhotoDetailsState extends State<PhotoDetails> {
   PhotoDetailsController photoDetailsController = PhotoDetailsController();
   ImageInfoModel? imageInfoModel;
+
+  @override
+  void dispose() {
+    // if (imageInfoModel != null) {
+    //   CachedNetworkImage.evictFromCache(imageInfoModel!.downloadUrl!);
+    // }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +63,7 @@ class _PhotoDetailsState extends State<PhotoDetails> {
                   const SizedBox(
                     height: 10,
                   ),
-                  imageCard(imageInfoModel!.downloadUrl!.changeUrl()),
+                  imageCard(imageInfoModel!.downloadUrl!),
                   if (Responsive.isTablet(context))
                     Container(
                         margin: const EdgeInsets.symmetric(
@@ -144,9 +153,16 @@ class _PhotoDetailsState extends State<PhotoDetails> {
           borderRadius: BorderRadius.circular(20),
           child: CachedNetworkImage(
               imageUrl: url,
-              placeholder: (_, __) => const Icon(
-                    CupertinoIcons.photo,
-                    size: 60,
+              placeholder: (_, __) => Container(
+                    height: 200,
+                    width: 300,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: appBarColor),
+                    child: const Icon(
+                      CupertinoIcons.photo,
+                      size: 60,
+                    ),
                   ),
               fit: BoxFit.fitHeight),
         ),

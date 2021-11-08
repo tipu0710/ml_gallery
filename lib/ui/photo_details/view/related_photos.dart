@@ -36,18 +36,19 @@ class RelatedPhotos extends StatelessWidget {
         GridView.count(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           physics: const NeverScrollableScrollPhysics(),
-          addAutomaticKeepAlives: true,
           crossAxisCount: 2,
           crossAxisSpacing: 4,
           mainAxisSpacing: 4,
           shrinkWrap: true,
-          childAspectRatio: 40/50,
+          childAspectRatio: 40 / 50,
           children: [
             for (var i = 0; i < (realtedPhotoModel.results?.length ?? 0); i++)
               RelatedPhotoCard(result: realtedPhotoModel.results![i])
           ],
         ),
-        const SizedBox(height: 10,)
+        const SizedBox(
+          height: 10,
+        )
       ],
     );
   }

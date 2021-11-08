@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:ml_gallery/extensions.dart';
 import 'package:ml_gallery/ui/photo_details/controller/photo_details_controller.dart';
 import 'package:ml_gallery/ui/photo_details/view/leading_icon.dart';
 import 'package:ml_gallery/ui/ui_helper/loader.dart';
@@ -23,10 +23,10 @@ class FullScreenPhoto extends StatelessWidget {
               maxScale: 4,
               child: Center(
                 child: Hero(
-                  tag: url.changeUrl(),
-                  child: Image.network(
-                    url,
-                    loadingBuilder: (_, __, ___) => const Loader(),
+                  tag: url,
+                  child: CachedNetworkImage(
+                    imageUrl: url,
+                    placeholder: (_, __) => const Loader(),
                   ),
                 ),
               ),
@@ -60,8 +60,7 @@ class FullScreenPhoto extends StatelessWidget {
                             ),
                             LeadingWidget(
                                 onTap: () {
-                                  photoDetailsController.savePhoto(
-                                      context, url);
+                                  photoDetailsController.savePhoto(context, url);
                                 },
                                 showNeumorphism: false,
                                 icon: Icons.download),
