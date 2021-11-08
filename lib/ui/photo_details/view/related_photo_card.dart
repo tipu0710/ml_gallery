@@ -27,7 +27,7 @@ class RelatedPhotoCard extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: () async {
-                  Navigator.push(
+                  await Navigator.push(
                     context,
                     HeroRoute(
                       builder: (_) => FullScreenPhoto(
@@ -64,6 +64,8 @@ class RelatedPhotoCard extends StatelessWidget {
                             fit: BoxFit.cover,
                             height: double.infinity,
                             width: double.infinity,
+                            cacheHeight: 200,
+                            cacheWidth: 300,
                           ),
                         ],
                       ),

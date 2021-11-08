@@ -34,6 +34,7 @@ class _FullScreenPhotoState extends State<FullScreenPhoto> {
           children: [
             InteractiveViewer(
               maxScale: 4,
+              panEnabled: false,
               child: Center(
                 child: Hero(
                   tag: widget.url,

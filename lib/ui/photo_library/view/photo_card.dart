@@ -52,6 +52,8 @@ class PhotoCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(60),
             child: CachedNetworkImage(
                 imageUrl: imageInfoModel.downloadUrl!.changeUrl(),
+                maxHeightDiskCache: 200,
+                maxWidthDiskCache: 300,
                 placeholder: (_, __) => const Icon(
                       CupertinoIcons.photo,
                       size: 50,

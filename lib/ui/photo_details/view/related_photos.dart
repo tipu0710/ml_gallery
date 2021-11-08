@@ -48,15 +48,17 @@ class RelatedPhotos extends StatelessWidget {
         GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 40/50,
+            childAspectRatio: 40 / 50,
             crossAxisSpacing: 2,
             mainAxisSpacing: 2,
           ),
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: getCount(realtedPhotoModel),
-          itemBuilder: (_, i) =>
-              RelatedPhotoCard(result: realtedPhotoModel.results![i]),
+          itemBuilder: (_, i) => RelatedPhotoCard(
+            result: realtedPhotoModel.results![i],
+            key: Key(realtedPhotoModel.results![i].id ?? ""),
+          ),
         ),
         const SizedBox(
           height: 10,

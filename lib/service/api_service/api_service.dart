@@ -1,5 +1,4 @@
-import 'dart:io';
-import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:ml_gallery/service/cache_manager/cache_manager.dart';
@@ -12,19 +11,22 @@ class ApiService {
   static Future<Response> getMethod(String endPoints,
       {bool allowBaseUrl = true}) async {
     try {
-      Dio _kDio = Dio();
+      Dio _kDio = Dio()..options.connectTimeout = 60*1000;
       Response response =
           allowBaseUrl ? await _dio.get(endPoints) : await _kDio.get(endPoints);
-      ApiCacheManager.putFile(allowBaseUrl ? (baseUrl + endPoints) : endPoints,
-          {"data": response.data});
+      String temp = jsonEncode(response.data);
+      temp = temp.replaceAll("“", "");
+      temp = temp.replaceAll("”", "");
+      await ApiCacheManager.putFile(allowBaseUrl ? (baseUrl + endPoints) : endPoints,
+          {"data": jsonDecode(temp)});
       return response;
     } on DioError catch (e) {
       if (e.type == DioErrorType.connectTimeout ||
           e.type == DioErrorType.receiveTimeout ||
           e.type == DioErrorType.sendTimeout ||
           e.type == DioErrorType.other) {
-        Map<String, dynamic>? data =
-            await ApiCacheManager.getData(baseUrl + endPoints);
+        Map<String, dynamic>? data = await ApiCacheManager.getData(
+            allowBaseUrl ? (baseUrl + endPoints) : endPoints);
         if (data != null) {
           return Response(
             requestOptions: RequestOptions(

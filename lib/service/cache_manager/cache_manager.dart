@@ -31,6 +31,7 @@ class ApiCacheManager {
       String data = String.fromCharCodes(uint8list);
       return jsonDecode(data);
     } catch (e) {
+      print(e);
       return null;
     }
   }
