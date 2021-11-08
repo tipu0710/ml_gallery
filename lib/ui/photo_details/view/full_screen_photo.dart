@@ -15,13 +15,34 @@ class FullScreenPhoto extends StatefulWidget {
   State<FullScreenPhoto> createState() => _FullScreenPhotoState();
 }
 
-class _FullScreenPhotoState extends State<FullScreenPhoto> {
+class _FullScreenPhotoState extends State<FullScreenPhoto>
+    with SingleTickerProviderStateMixin {
+  TransformationController transformationController =
+      TransformationController();
+  late TapDownDetails _doubleTapDetails;
+
+  late AnimationController _animationController;
+  late Animation<Matrix4> _animation;
+
   @override
   void dispose() {
     if (widget.relatedPhoto) {
       CachedNetworkImage.evictFromCache(widget.url);
     }
+    _animationController.dispose();
+    transformationController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    )..addListener(() {
+        transformationController.value = _animation.value;
+      });
+    super.initState();
   }
 
   @override
@@ -32,15 +53,24 @@ class _FullScreenPhotoState extends State<FullScreenPhoto> {
       body: SafeArea(
         child: Stack(
           children: [
-            InteractiveViewer(
-              maxScale: 4,
-              panEnabled: false,
-              child: Center(
-                child: Hero(
-                  tag: widget.url,
-                  child: CachedNetworkImage(
-                    imageUrl: widget.url,
-                    placeholder: (_, __) => const Loader(),
+            Center(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: GestureDetector(
+                  onDoubleTapDown: _handleDoubleTapDown,
+                  onDoubleTap: _handleDoubleTap,
+                  child: InteractiveViewer(
+                    maxScale: 4,
+                    transformationController: transformationController,
+                    child: Hero(
+                      tag: widget.url,
+                      child: CachedNetworkImage(
+                        imageUrl: widget.url,
+                        placeholder: (_, __) => const Loader(),
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -94,5 +124,30 @@ class _FullScreenPhotoState extends State<FullScreenPhoto> {
         ),
       ),
     );
+  }
+
+  void _handleDoubleTapDown(TapDownDetails details) {
+    _doubleTapDetails = details;
+  }
+
+  void _handleDoubleTap() {
+    Matrix4 _endMatrix;
+    if (transformationController.value != Matrix4.identity()) {
+      _endMatrix = Matrix4.identity();
+    } else {
+      final position = _doubleTapDetails.localPosition;
+      // For a x zoom
+      // translate(-position.dx * (x-1), -position.dy * (x-1))
+      _endMatrix = Matrix4.identity()
+        ..translate(-position.dx * 3, -position.dy * 3)
+        ..scale(4.0);
+    }
+    _animation = Matrix4Tween(
+      begin: transformationController.value,
+      end: _endMatrix,
+    ).animate(
+      CurveTween(curve: Curves.easeOut).animate(_animationController),
+    );
+    _animationController.forward(from: 0);
   }
 }
