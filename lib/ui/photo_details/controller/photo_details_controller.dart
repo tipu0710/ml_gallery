@@ -14,12 +14,14 @@ class PhotoDetailsController {
     return file?.file;
   }
 
-  Future<bool> share(String url) async {
+  Future<bool> share(String url, BuildContext context) async {
     File? file = await getFile(url);
     if (file != null) {
       await Share.shareFiles([file.path], text: 'ML Gallery picture');
       return true;
     } else {
+      Utils.showSnackBar(context, "Photo loading! Please wait!",
+          durationInMiliseconds: 2000);
       return false;
     }
   }
@@ -29,12 +31,10 @@ class PhotoDetailsController {
     return save ?? false;
   }
 
-    savePhoto(BuildContext context, String url) async {
-    File? file =
-        await getFile(url);
+  savePhoto(BuildContext context, String url) async {
+    File? file = await getFile(url);
     if (file == null) {
-      Utils.showSnackBar(
-          context, "Something went wrong! cannot save the photo!",
+      Utils.showSnackBar(context, "Photo loading! Please wait!",
           durationInMiliseconds: 2000);
     } else {
       bool save = await _savePhoto(file);
@@ -43,7 +43,7 @@ class PhotoDetailsController {
     }
   }
 
-    openImage(BuildContext context, String url) {
+  openImage(BuildContext context, String url) {
     Navigator.push(
       context,
       HeroRoute(

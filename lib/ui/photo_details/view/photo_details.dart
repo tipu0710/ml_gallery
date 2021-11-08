@@ -24,16 +24,23 @@ class _PhotoDetailsState extends State<PhotoDetails> {
   PhotoDetailsController photoDetailsController = PhotoDetailsController();
   ImageInfoModel? imageInfoModel;
 
+  bool? isPhone;
+
   @override
-  void dispose() {
-    // if (imageInfoModel != null) {
-    //   CachedNetworkImage.evictFromCache(imageInfoModel!.downloadUrl!);
-    // }
-    super.dispose();
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      isPhone = MediaQuery.of(context).size.width < 650;
+    });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if(isPhone!=null && isPhone! && Responsive.isTablet(context)){
+        Navigator.pop(context);
+      }
+    });
     return Scaffold(
       appBar: Responsive.isMobile(context)
           ? AppBar(
@@ -90,7 +97,8 @@ class _PhotoDetailsState extends State<PhotoDetails> {
       children: [
         LeadingWidget(
             onTap: () {
-              photoDetailsController.share(imageInfoModel!.downloadUrl!);
+              photoDetailsController.share(
+                  imageInfoModel!.downloadUrl!, context);
             },
             icon: Icons.share),
         const SizedBox(

@@ -4,12 +4,25 @@ import 'package:ml_gallery/ui/photo_details/controller/photo_details_controller.
 import 'package:ml_gallery/ui/photo_details/view/leading_icon.dart';
 import 'package:ml_gallery/ui/ui_helper/loader.dart';
 
-class FullScreenPhoto extends StatelessWidget {
+class FullScreenPhoto extends StatefulWidget {
   final String url;
   final bool relatedPhoto;
   const FullScreenPhoto(
       {Key? key, required this.url, this.relatedPhoto = false})
       : super(key: key);
+
+  @override
+  State<FullScreenPhoto> createState() => _FullScreenPhotoState();
+}
+
+class _FullScreenPhotoState extends State<FullScreenPhoto> {
+  @override
+  void dispose() {
+    if (widget.relatedPhoto) {
+      CachedNetworkImage.evictFromCache(widget.url);
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +36,9 @@ class FullScreenPhoto extends StatelessWidget {
               maxScale: 4,
               child: Center(
                 child: Hero(
-                  tag: url,
+                  tag: widget.url,
                   child: CachedNetworkImage(
-                    imageUrl: url,
+                    imageUrl: widget.url,
                     placeholder: (_, __) => const Loader(),
                   ),
                 ),
@@ -44,14 +57,15 @@ class FullScreenPhoto extends StatelessWidget {
                       showNeumorphism: false,
                     ),
                   ),
-                  if (relatedPhoto)
+                  if (widget.relatedPhoto)
                     Row(
                       children: [
                         Row(
                           children: [
                             LeadingWidget(
                                 onTap: () {
-                                  photoDetailsController.share(url);
+                                  photoDetailsController.share(
+                                      widget.url, context);
                                 },
                                 showNeumorphism: false,
                                 icon: Icons.share),
@@ -60,7 +74,8 @@ class FullScreenPhoto extends StatelessWidget {
                             ),
                             LeadingWidget(
                                 onTap: () {
-                                  photoDetailsController.savePhoto(context, url);
+                                  photoDetailsController.savePhoto(
+                                      context, widget.url);
                                 },
                                 showNeumorphism: false,
                                 icon: Icons.download),

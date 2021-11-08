@@ -8,8 +8,7 @@ import 'package:ml_gallery/ui/ui_helper/ml_text.dart';
 
 class RelatedPhotos extends StatelessWidget {
   final String urlId;
-  const RelatedPhotos({required Key key, required this.urlId})
-      : super(key: key);
+  const RelatedPhotos({Key? key, required this.urlId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,23 +32,46 @@ class RelatedPhotos extends StatelessWidget {
           padding: EdgeInsets.all(16.0),
           child: MlText(text: "Related photos: "),
         ),
-        GridView.count(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+        // GridView.count(
+        //   padding: const EdgeInsets.symmetric(horizontal: 16),
+        //   physics: const NeverScrollableScrollPhysics(),
+        //   crossAxisCount: 2,
+        //   crossAxisSpacing: 4,
+        //   mainAxisSpacing: 4,
+        //   shrinkWrap: true,
+        //   childAspectRatio: 40 / 50,
+        //   children: [
+        //     for (var i = 0; i < getCount(realtedPhotoModel); i++)
+        //       RelatedPhotoCard(result: realtedPhotoModel.results![i])
+        //   ],
+        // ),
+        GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 40/50,
+            crossAxisSpacing: 2,
+            mainAxisSpacing: 2,
+          ),
           physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
-          crossAxisSpacing: 4,
-          mainAxisSpacing: 4,
           shrinkWrap: true,
-          childAspectRatio: 40 / 50,
-          children: [
-            for (var i = 0; i < (realtedPhotoModel.results?.length ?? 0); i++)
-              RelatedPhotoCard(result: realtedPhotoModel.results![i])
-          ],
+          itemCount: getCount(realtedPhotoModel),
+          itemBuilder: (_, i) =>
+              RelatedPhotoCard(result: realtedPhotoModel.results![i]),
         ),
         const SizedBox(
           height: 10,
         )
       ],
     );
+  }
+
+  int getCount(RealtedPhotoModel realtedPhotoModel) {
+    if (realtedPhotoModel.results != null) {
+      return realtedPhotoModel.results!.length > 4
+          ? 4
+          : realtedPhotoModel.results!.length;
+    } else {
+      return 0;
+    }
   }
 }
