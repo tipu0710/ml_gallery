@@ -11,7 +11,6 @@ import 'package:ml_gallery/extensions.dart';
 import 'package:ml_gallery/utils/responsive.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'leading_icon.dart';
 
 class PhotoDetails extends StatefulWidget {
@@ -55,7 +54,7 @@ class _PhotoDetailsState extends State<PhotoDetails> {
                   const SizedBox(
                     height: 10,
                   ),
-                  imageCard(imageInfoModel!.downloadUrl!),
+                  imageCard(imageInfoModel!.downloadUrl!.changeUrl()),
                   if (Responsive.isTablet(context))
                     Container(
                         margin: const EdgeInsets.symmetric(

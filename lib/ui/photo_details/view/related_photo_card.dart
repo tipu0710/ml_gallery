@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:ml_gallery/utils/constants.dart';
 import 'package:ml_gallery/utils/hero_route.dart';
 import 'package:ml_gallery/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'full_screen_photo.dart';
 
 class RelatedPhotoCard extends StatelessWidget {
@@ -63,13 +61,14 @@ class RelatedPhotoCard extends StatelessWidget {
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30)),
-                      child: CachedNetworkImage(
-                          imageUrl: result.links!.download!,
-                          placeholder: (_, __) => const Icon(
-                                CupertinoIcons.photo,
-                                size: 50,
-                              ),
-                          fit: BoxFit.cover),
+                      child: Image.network(
+                        result.links!.download!,
+                        scale: .5,
+                        loadingBuilder: (_, __, ___) => const Icon(
+                          CupertinoIcons.photo,
+                          size: 50,
+                        ),
+                      ),
                     ),
                   ),
                 ),

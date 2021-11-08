@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ml_gallery/extensions.dart';
 import 'package:ml_gallery/service/providers/photo_model_providers.dart';
 import 'package:ml_gallery/ui/home/model/image_info_model.dart';
 import 'package:ml_gallery/ui/photo_details/controller/photo_details_controller.dart';
@@ -25,7 +26,7 @@ class PhotoCard extends StatelessWidget {
         photoModelProviders.setModel(imageInfoModel);
         if (Responsive.isMobile(context)) {
           File? file = await PhotoDetailsController()
-              .getFile(imageInfoModel.downloadUrl!);
+              .getFile(imageInfoModel.downloadUrl!.changeUrl());
           if (file != null) {
             Navigator.push(
               context,
@@ -50,7 +51,7 @@ class PhotoCard extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(60),
             child: CachedNetworkImage(
-                imageUrl: imageInfoModel.downloadUrl!,
+                imageUrl: imageInfoModel.downloadUrl!.changeUrl(),
                 placeholder: (_, __) => const Icon(
                       CupertinoIcons.photo,
                       size: 50,

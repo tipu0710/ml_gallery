@@ -48,11 +48,11 @@ class _PhotoLibraryState extends State<PhotoLibrary> {
         ),
         newPageProgressIndicatorBuilder: (_) => Container(
           height: 70,
-          width: 40,
+          width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(60),
           ),
-          child: const Loader(size: 140,),
+          child: const Center(child: Loader(size: 140,)),
         ),
       ),
     );
