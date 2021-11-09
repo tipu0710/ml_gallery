@@ -10,7 +10,10 @@ class PhotoLibraryTabView extends StatelessWidget {
     return Row(
       children: const [
         Expanded(flex: 2, child: PhotoLibrary()),
-        Expanded(flex: 4, child: PhotoDetails()),
+        Expanded(flex: 4, child: Padding(
+          padding: EdgeInsets.only(left:16.0),
+          child: PhotoDetails(),
+        )),
       ],
     );
   }

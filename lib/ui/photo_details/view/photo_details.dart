@@ -59,12 +59,12 @@ class _PhotoDetailsState extends State<PhotoDetails> {
               actions: [actions()],
             )
           : null,
-      body: SingleChildScrollView(
-        child: Consumer<PhotoModelProviders>(
-          builder: (_, photoModelProvider, __) {
-            if (photoModelProvider.imageInfoModel != null) {
-              imageInfoModel = photoModelProvider.imageInfoModel!;
-              return Column(
+      body: Consumer<PhotoModelProviders>(
+        builder: (_, photoModelProvider, __) {
+          if (photoModelProvider.imageInfoModel != null) {
+            imageInfoModel = photoModelProvider.imageInfoModel!;
+            return SingleChildScrollView(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(
@@ -82,12 +82,12 @@ class _PhotoDetailsState extends State<PhotoDetails> {
                     urlId: photoModelProvider.imageInfoModel!.url!.getUrlId(),
                   ),
                 ],
-              );
-            } else {
-              return Container();
-            }
-          },
-        ),
+              ),
+            );
+          } else {
+            return const Center(child: MlText(text: "Select an image", fontSize: 30,),);
+          }
+        },
       ),
     );
   }
